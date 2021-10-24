@@ -14,6 +14,5 @@ public class Wait implements iComandos{
 
     @Override
     public void executar() {
-        return false;
     }
 }

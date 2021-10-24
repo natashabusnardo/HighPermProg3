@@ -14,6 +14,5 @@ public class Notify implements iComandos{
 
     @Override
     public void executar() {
-        return false;
     }
 }

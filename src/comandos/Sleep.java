@@ -15,6 +15,5 @@ public class Sleep implements iComandos {
 
     @Override
     public void executar() {
-        return false;
     }
 }
