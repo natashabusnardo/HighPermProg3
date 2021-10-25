@@ -30,7 +30,7 @@ public class Handler extends Thread {
 
         do {
             String text = null;
-            System.out.println("do/while loop");
+            System.out.println("loop");
             try {
                 text = entrada.readLine();
             } catch (IOException e) {
@@ -51,16 +51,16 @@ public class Handler extends Thread {
             switch (msg[0]) {
                 case "new":
                     comando = new New(msg);
-                    execute(comando);
+                    executar(comando);
                     break;
                 case "sleep":
                     comando = new Sleep(msg);
-                    execute(comando);
-                    break;
-                case "wait":
-                    synchronized (lock) {
+                    if (validar(comando)) {
                         try {
-                            lock.wait();
+                            Sleep(Integer.parseInt(msg[1]));
+                        } catch (NumberFormatException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -68,29 +68,54 @@ public class Handler extends Thread {
                     }
                     break;
                 case "notify":
-                    //command = new CommandNotify(msg);
-                    System.out.println("notifying");
+                    System.out.println("Notificando");
                     synchronized (lock) {
                         lock.notifyAll();
                     }
                     break;
+                case "wait":
+                    comando = new Wait(msg);
+                    if (validar(comando))
+                        Wait();
+                    break;
             }
-
         } while (!"sair".equals(entrada.toString()));
     }
 
-    public void execute(iComandos comando) {
+    public void executar(iComandos comando) {
         if (comando.validar()) {
             comando.executar();
         } else
-            System.out.println("Invalid command");
+            System.out.println("Comando inválido.");
     }
 
-    public void clientWait() throws InterruptedException {
-        lock.wait();
+    public boolean validar(iComandos comando) {
+        if (comando.validar())
+            return true;
+        System.out.println("Comando inválido.");
+        return false;
     }
 
-    public void clientNotify() {
-        lock.notifyAll();
+    public void Sleep(int mills) throws InterruptedException {
+        synchronized (lock) {
+            sleep(mills);
+        }
+    }
+
+    public void Wait() {
+        synchronized (lock) {
+            try {
+                lock.wait();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void Notify() {
+        synchronized (lock) {
+            lock.notify();
+        }
     }
 }

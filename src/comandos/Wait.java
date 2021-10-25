@@ -9,6 +9,8 @@ public class Wait implements iComandos{
 
     @Override
     public boolean validar() {
+        if(comando.length == 1)
+            return true;
         return false;
     }
 

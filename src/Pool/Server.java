@@ -20,7 +20,7 @@ public class Server {
         Random random = new Random();
 
         try {
-            servidor = new ServerSocket(7000);
+            servidor = new ServerSocket(7003);
 
             while (true) {
                 conexao = servidor.accept();
